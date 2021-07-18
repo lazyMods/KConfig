@@ -3,23 +3,8 @@ package lazy.kconfig
 import java.nio.charset.Charset
 import java.nio.file.Path
 
-object ConfigParser {
+internal object ConfigParser {
 
-    /**
-     * Loads the given file, assuming that is a "valid" config file, and reads it line
-     * by line, if the line doesn't have the requirements is ignored
-     *
-     * A valid config is:
-     * config_key=value=min>max
-     *
-     * type = the type
-     * configKey = uniqueName
-     * value = the value that the configKey holds
-     * minMax = the max and the min value
-     *
-     * @param filePath path to the file to be loaded
-     * @return a list of lazy.kconfig.ConfigEntry
-     */
     fun load(filePath: Path): List<ConfigEntry> {
         val configs = mutableListOf<ConfigEntry>()
         filePath.toFile().readLines(Charset.defaultCharset()).forEach {
@@ -36,8 +21,8 @@ object ConfigParser {
                             ConfigEntry(
                                 configKey,
                                 this,
-                                if(hasMinMax) parseValue(type, getMinAndMax(params[3]).first) else null,
-                                if(hasMinMax) parseValue(type, getMinAndMax(params[3]).second) else null
+                                if (hasMinMax) parseValue(type, getMinAndMax(params[3]).first) else null,
+                                if (hasMinMax) parseValue(type, getMinAndMax(params[3]).second) else null
                             )
                         )
                     } ?: run {
