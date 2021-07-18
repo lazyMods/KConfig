@@ -1,3 +1,5 @@
+package lazy.kconfig
+
 import org.junit.Test
 import java.nio.file.Paths
 import kotlin.test.assertEquals

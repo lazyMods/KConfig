@@ -1,3 +1,5 @@
+package lazy.kconfig
+
 class ConfigEntry(
     val key: String,
     val value: Any,
@@ -9,6 +11,6 @@ class ConfigEntry(
     }
 
     override fun toString(): String {
-        return "ConfigEntry(key='$key', value=$value, min=$min, max=$max)"
+        return "lazy.kconfig.ConfigEntry(key='$key', value=$value, min=$min, max=$max)"
     }
 }

@@ -1,4 +1,5 @@
-import java.lang.IllegalArgumentException
+package lazy.kconfig
+
 import java.nio.charset.Charset
 import java.nio.file.Path
 
@@ -17,7 +18,7 @@ object ConfigParser {
      * minMax = the max and the min value
      *
      * @param filePath path to the file to be loaded
-     * @return a list of ConfigEntry
+     * @return a list of lazy.kconfig.ConfigEntry
      */
     fun load(filePath: Path): List<ConfigEntry> {
         val configs = mutableListOf<ConfigEntry>()
