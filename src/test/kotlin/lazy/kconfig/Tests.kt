@@ -15,17 +15,24 @@ class Tests {
     }
 
     @Test
-    fun hasMinMax() {
-        assertEquals(1, load.first {it.key == "minMax"}.min)
-        assertEquals(10, load.first {it.key == "minMax"}.max)
+    fun configHolder() {
+        KConfig.init(Paths.get("test.props"))
+        val configHolder = KConfig.createConfigHolder<Int>("minMax")
+        assertEquals(10, configHolder.get())
     }
 
     @Test
-    fun booleanTest() = assertEquals(false, load.first {it.key == "fooIsBar"}.value)
+    fun hasMinMax() {
+        assertEquals(1, load.first { it.key == "minMax" }.min)
+        assertEquals(10, load.first { it.key == "minMax" }.max)
+    }
 
     @Test
-    fun stringTest() = assertEquals("Marco", load.first {it.key == "name"}.value)
+    fun booleanTest() = assertEquals(false, load.first { it.key == "fooIsBar" }.value)
 
     @Test
-    fun intTest() = assertEquals(10, load.first {it.key == "minMax"}.value)
+    fun stringTest() = assertEquals("Marco", load.first { it.key == "name" }.value)
+
+    @Test
+    fun intTest() = assertEquals(10, load.first { it.key == "minMax" }.value)
 }
