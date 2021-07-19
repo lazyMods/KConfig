@@ -1,28 +1,56 @@
-# KConfig [WIP]
+# KConfig 💾 [WIP]
 
-Configuration library that doesn't depend on a mod to be installed.
+Configuration library that doesn't depend on a mod to work.
+The syntax used is like a baby version of TOML.
+
+### TODO: 
+
+**TOML Parse:**
+* [x] Parse values like: **String, Double, Boolean and Integer**
+* [ ] Parse array of values
+* [ ] Multiline array definitions 🔽
+
+```toml
+[levels]
+value=[
+    1, 10, 20, 30
+]
+```
+**Others:**
+* [ ] Default values when not available.
+* [ ] Min and Max allowed.
 
 ### How to use:
 
-Currently, you need to clone this repo and build the project to get the jar file.
+```kotlin
+repositories {
+    maven("https://lazy-maven-repo.herokuapp.com/")
+}
 
-### 0.0.1 Version
-
-* **type** - config data type
-    * **string**, boolean, double, int
-* **configKey** - unique name to define the config
-* **value** - the value that **configKey** holds
-* **minMax** - the min and the max value separated with a **>** character
-
-| Type   | Config Entry | Value     | Min/Max |
-|--------|--------------|-----------|---------|
-| string | playerName   | kina      |         |
-| int    | age          | 18        | 18/100  |
-| float  | size         | 1.5       | 1.4/2   |
-| double | something    | 0.0000001 | 0/1     |
-
-### Example
+dependencies {
+  val kConfigVersion: String by project
+  implementation("lazy:kconfig:$kConfigVersion")
+}
 ```
-string=playerName=kina
-int=age=18=18>100
+
+### Version: 0.0.1
+
+```kotlin
+KConfig.init(Paths.get("test.toml"))
+//ConfigHolder holds the value from the key specified
+var name: ConfigHolder<String> = KConfig.createConfigHolder("name")
+//Using ConfigHolder::get you get the held value
+println(name.get())
+```
+
+##### Configuration File:
+```toml
+[pineappleOnPizza]
+value=false
+[name]
+value="Marco"
+[height]
+value=1.69
+[age]
+value=23
 ```
