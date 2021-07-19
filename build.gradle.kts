@@ -13,13 +13,13 @@ repositories {
     mavenCentral()
 }
 
-/*dependencies {
+dependencies {
     testImplementation(kotlin("test"))
 }
 
 tasks.test {
     useJUnit()
-}*/
+}
 
 tasks.withType<KotlinCompile>() {
     kotlinOptions.jvmTarget = "1.8"
@@ -32,11 +32,11 @@ publishing {
 
     repositories {
         maven {
-            name = "lazyGithubPackages"
-            url = uri("https://maven.pkg.github.com/lazyMods/k-config")
+            name = "lazy"
+            url = uri("https://lazy-maven-repo.herokuapp.com/releases")
             credentials {
-                username = properties.getProperty("gpr.user") as String
-                password = properties.getProperty("gpr.key") as String
+                username = properties.getProperty("user") as String
+                password = properties.getProperty("key") as String
             }
         }
     }
