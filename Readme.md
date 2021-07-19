@@ -1,4 +1,4 @@
-#KConfig [WIP]
+# KConfig [WIP]
 
 Configuration library that doesn't depend on a mod to be installed.
 
@@ -6,7 +6,7 @@ Configuration library that doesn't depend on a mod to be installed.
 
 Currently, you need to clone this repo and build the project to get the jar file.
 
-###0.0.1 Version
+### 0.0.1 Version
 
 * **type** - config data type
     * **string**, boolean, double, int
@@ -21,7 +21,7 @@ Currently, you need to clone this repo and build the project to get the jar file
 | float  | size         | 1.5       | 1.4/2   |
 | double | something    | 0.0000001 | 0/1     |
 
-###Example
+### Example
 ```
 string=playerName=kina
 int=age=18=18>100
