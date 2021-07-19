@@ -7,7 +7,7 @@ object KConfig {
     private var loadedConfigs = listOf<ConfigEntry>()
 
     fun init(filePath: Path) {
-        loadedConfigs = ConfigParser.load(filePath)
+        loadedConfigs = ConfigParser.parse(filePath)
     }
 
     fun <T> createConfigHolder(key: String): ConfigHolder<T> {

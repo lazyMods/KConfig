@@ -5,48 +5,36 @@ import java.nio.file.Path
 
 internal object ConfigParser {
 
-    fun load(filePath: Path): List<ConfigEntry> {
-        val configs = mutableListOf<ConfigEntry>()
-        filePath.toFile().readLines(Charset.defaultCharset()).forEach {
-            if (it.startsWith('#').not()) {
-                if (it.contains('=')) {
-                    val params = it.split('=')
-                    val type = params[0]
-                    val configKey = params[1]
-                    val value = params[2]
-                    val hasMinMax = params.size == 4
+    private val entries = mutableMapOf<String, String>()
 
-                    parseValue(type, value)?.run {
-                        configs.add(
-                            ConfigEntry(
-                                configKey,
-                                this,
-                                if (hasMinMax) parseValue(type, getMinAndMax(params[3]).first) else null,
-                                if (hasMinMax) parseValue(type, getMinAndMax(params[3]).second) else null
-                            )
-                        )
-                    } ?: run {
-                        println("Couldn't parse type: $type of $configKey")
-                    }
-                }
-            }
+    fun parse(filePath: Path): List<ConfigEntry> {
+        val fileLines = filePath.toFile().readLines(Charset.defaultCharset())
+        createEntries(fileLines)
+        return parseEntries()
+    }
+
+    private fun createEntries(lines: List<String>) {
+        lines.forEachIndexed { index, line ->
+            if (startsAndEndsWith(line, '[', ']') && lines[index + 1].startsWith("value="))
+                entries[line.substring(1, line.length - 1)] = lines[index + 1].substring("value=".length)
+        }
+    }
+
+    private fun parseEntries(): List<ConfigEntry> {
+        val configs = mutableListOf<ConfigEntry>()
+        entries.forEach { (key, value) ->
+            configs.add(ConfigEntry(key, parseValue(value)))
         }
         return configs
     }
 
-    private fun getMinAndMax(param: String): Pair<String, String> {
-        val minAndMax = param.split('>')
-        return Pair(minAndMax[0], minAndMax[1])
+    private fun parseValue(parse: String): Any {
+        if (parse == "false" || parse == "true") return parse.toBoolean()
+        if (startsAndEndsWith(parse, '"')) return parse.substring(1, parse.length - 1)
+        if (parse.filter { it == '.' }.length == 1) return parse.toDouble()
+        return parse.toInt()
     }
 
-    private fun parseValue(type: String, toParse: String): Any? {
-        when (type) {
-            "string" -> return toParse
-            "boolean" -> return toParse.toBoolean()
-            "int" -> return toParse.toInt()
-            "double" -> return toParse.toDouble()
-            "float" -> return toParse.toFloat()
-        }
-        return null
-    }
+    private fun startsAndEndsWith(toCheck: String, char: Char): Boolean = toCheck.startsWith(char) && toCheck.endsWith(char)
+    private fun startsAndEndsWith(toCheck: String, start: Char, end: Char): Boolean = toCheck.startsWith(start) && toCheck.endsWith(end)
 }
