@@ -11,11 +11,11 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
+/*dependencies {
     testImplementation(kotlin("test"))
 }
 
-/*tasks.test {
+tasks.test {
     useJUnit()
 }*/
 
