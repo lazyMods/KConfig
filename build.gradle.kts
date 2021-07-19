@@ -15,9 +15,9 @@ dependencies {
     testImplementation(kotlin("test"))
 }
 
-tasks.test {
+/*tasks.test {
     useJUnit()
-}
+}*/
 
 tasks.withType<KotlinCompile>() {
     kotlinOptions.jvmTarget = "1.8"
