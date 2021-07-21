@@ -24,7 +24,7 @@ value=[
 
 ```kotlin
 repositories {
-    maven("https://lazy-maven-repo.herokuapp.com/")
+    maven("https://pkgs.dev.azure.com/lazyio/maven/_packaging/lazy/maven/v1")
 }
 
 dependencies {
