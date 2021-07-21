@@ -17,7 +17,8 @@ value=[
 ]
 ```
 **Others:**
-* [ ] Default values when not available.
+* [x] Create files if they don't exist.
+* [x] Default values when not available.
 * [ ] Min and Max allowed.
 
 ### How to use:
@@ -29,16 +30,17 @@ repositories {
 
 dependencies {
   val kConfigVersion: String by project
-  implementation("lazy:kconfig:$kConfigVersion")
+  modImplementation("lazy:kconfig:$kConfigVersion")
+  include("lazy:kconfig:$kConfigVersion")
 }
 ```
 
-### Version: 0.0.1
+### Version: 0.0.2
 
 ```kotlin
 KConfig.init(Paths.get("test.toml"))
-//ConfigHolder holds the value from the key specified
-var name: ConfigHolder<String> = KConfig.createConfigHolder("name")
+//ConfigHolder holds the value from the key specified with default
+var name: ConfigHolder<String> = KConfig.createConfigHolder("name", "Marco")
 //Using ConfigHolder::get you get the held value
 println(name.get())
 ```
