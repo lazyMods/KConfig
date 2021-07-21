@@ -1,5 +1,4 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
     kotlin("jvm") version "1.5.10"
@@ -8,11 +7,11 @@ plugins {
 }
 
 group = "lazy"
-version = "0.0.1"
+version = "0.0.2"
 
 repositories {
     mavenCentral()
-    maven("https://pkgs.dev.azure.com/lazyio/maven/_packaging/lazy/maven/v1"){
+    maven("https://pkgs.dev.azure.com/lazyio/maven/_packaging/lazy/maven/v1") {
         name = "lazy"
         authentication {
             create<BasicAuthentication>("basic")
@@ -34,7 +33,7 @@ tasks.withType<KotlinCompile>() {
 
 publishing {
     repositories {
-        maven("https://pkgs.dev.azure.com/lazyio/maven/_packaging/lazy/maven/v1"){
+        maven("https://pkgs.dev.azure.com/lazyio/maven/_packaging/lazy/maven/v1") {
             name = "lazy"
             authentication {
                 create<BasicAuthentication>("basic")
