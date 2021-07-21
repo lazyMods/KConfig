@@ -1,16 +1,29 @@
 package lazy.kconfig
 
+import java.io.FileWriter
 import java.nio.charset.Charset
 import java.nio.file.Path
 
 internal object ConfigParser {
 
     private val entries = mutableMapOf<String, String>()
+    private lateinit var filePath: Path
 
     fun parse(filePath: Path): List<ConfigEntry> {
+        this.filePath = filePath;
         val fileLines = filePath.toFile().readLines(Charset.defaultCharset())
         createEntries(fileLines)
         return parseEntries()
+    }
+
+    fun addConfigEntry(entry: ConfigEntry){
+        val configFile = FileWriter(filePath.toFile(), true)
+        configFile.append("[${entry.key}]\n")
+        configFile.append("value=")
+        val value = if(entry.value is String) "\u0022${entry.value}\u0022\n" else "${entry.value}\n"
+        configFile.append(value)
+        configFile.flush()
+        configFile.close()
     }
 
     private fun createEntries(lines: List<String>) {
