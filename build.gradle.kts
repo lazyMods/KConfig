@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
     kotlin("jvm") version "1.5.10"
+    id("net.linguica.maven-settings") version "0.5"
     `maven-publish`
 }
 
@@ -11,6 +12,12 @@ version = "0.0.1"
 
 repositories {
     mavenCentral()
+    maven("https://pkgs.dev.azure.com/lazyio/maven/_packaging/lazy/maven/v1"){
+        name = "lazy"
+        authentication {
+            create<BasicAuthentication>("basic")
+        }
+    }
 }
 
 dependencies {
@@ -26,17 +33,11 @@ tasks.withType<KotlinCompile>() {
 }
 
 publishing {
-    val propertiesFile = file("local.properties")
-    val properties = Properties()
-    properties.load(propertiesFile.inputStream())
-
     repositories {
-        maven {
+        maven("https://pkgs.dev.azure.com/lazyio/maven/_packaging/lazy/maven/v1"){
             name = "lazy"
-            url = uri("https://lazy-maven-repo.herokuapp.com/releases")
-            credentials {
-                username = properties.getProperty("user") as String
-                password = properties.getProperty("key") as String
+            authentication {
+                create<BasicAuthentication>("basic")
             }
         }
     }
