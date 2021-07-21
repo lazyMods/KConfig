@@ -6,23 +6,13 @@ import kotlin.test.assertEquals
 
 class Tests {
 
-    private val load = ConfigParser.parse(Paths.get("test.toml"))
-
-    @Test
-    fun containsConfig() {
-        assertEquals(true, load.any { it.key == "pineappleOnPizza" })
-        assertEquals(true, load.any { it.key == "name" })
-        assertEquals(true, load.any { it.key == "height" })
-        assertEquals(true, load.any { it.key == "age" })
-    }
-
     @Test
     fun configHolder() {
         KConfig.init(Paths.get("test.toml"))
-        val age = KConfig.createConfigHolder<Int>("age")
-        val name = KConfig.createConfigHolder<String>("name")
-        val pineappleOnPizza = KConfig.createConfigHolder<Boolean>("pineappleOnPizza")
-        val height = KConfig.createConfigHolder<Double>("height")
+        val age = KConfig.createConfigHolder("age", 23)
+        val name = KConfig.createConfigHolder("name", "Marco")
+        val pineappleOnPizza = KConfig.createConfigHolder("pineappleOnPizza", false)
+        val height = KConfig.createConfigHolder("height", 1.69)
         assertEquals(23, age.get())
         assertEquals("Marco", name.get())
         assertEquals(false, pineappleOnPizza.get())
@@ -30,14 +20,26 @@ class Tests {
     }
 
     @Test
-    fun booleanTest() = assertEquals(false, load.first { it.key == "pineappleOnPizza" }.value)
+    fun booleanTest() {
+        KConfig.init(Paths.get("test.toml"))
+        assertEquals(false, KConfig.createConfigHolder("pineappleOnPizza", false).get())
+    }
 
     @Test
-    fun stringTest() = assertEquals("Marco", load.first { it.key == "name" }.value)
+    fun stringTest() {
+        KConfig.init(Paths.get("test.toml"))
+        assertEquals("Marco", KConfig.createConfigHolder("name", "Marco").get())
+    }
 
     @Test
-    fun intTest() = assertEquals(23, load.first { it.key == "age" }.value)
+    fun intTest() {
+        KConfig.init(Paths.get("test.toml"))
+        assertEquals(23, KConfig.createConfigHolder("age", 23).get())
+    }
 
     @Test
-    fun doubleTest() = assertEquals(1.69, load.first { it.key == "height" }.value)
+    fun doubleTest() {
+        KConfig.init(Paths.get("test.toml"))
+        assertEquals(1.69, KConfig.createConfigHolder("height", 1.69).get())
+    }
 }
