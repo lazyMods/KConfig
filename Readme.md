@@ -8,6 +8,7 @@ The syntax used is like a baby version of TOML.
 **TOML Parse:**
 * [x] Parse values like: **String, Double, Boolean and Integer**
 * [ ] Parse array of values
+* [ ] Array of arrays: `[ [1, 2], [23, 2] ]`
 * [ ] Multiline array definitions 🔽
 
 ```toml
