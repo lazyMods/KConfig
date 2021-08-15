@@ -20,6 +20,12 @@ class Tests {
     }
 
     @Test
+    fun loadMsgTest() {
+        KConfig.init(Paths.get("test.toml"))
+        assertEquals(10, KConfig.createConfigHolder("msgTest", 100).get())
+    }
+
+    @Test
     fun booleanTest() {
         KConfig.init(Paths.get("test.toml"))
         assertEquals(false, KConfig.createConfigHolder("pineappleOnPizza", false).get())
@@ -41,5 +47,42 @@ class Tests {
     fun doubleTest() {
         KConfig.init(Paths.get("test.toml"))
         assertEquals(1.69, KConfig.createConfigHolder("height", 1.69).get())
+    }
+
+    @Test
+    fun stringArrayTest() {
+        KConfig.init(Paths.get("test.toml"))
+        assertEquals(
+            arrayListOf("\"Naruto\"", "\"Dragon Ball\"", "\"HunterXHunter\""),
+            KConfig.createConfigHolder("animes", arrayListOf("\"Naruto\"", "\"Dragon Ball\"", "\"Death Note\"", "\"HunterXHunter\"")).get()
+        )
+    }
+
+    @Test
+    fun arrayContainValue() {
+        KConfig.init(Paths.get("test.toml"))
+        assertEquals(true, KConfig.createConfigHolder("animes", arrayListOf("\"Naruto\"", "\"Dragon Ball\"", "\"Death Note\"", "\"HunterXHunter\"")).get().contains("\"Naruto\""))
+    }
+
+    @Test
+    fun intArrayTest() {
+        initKC()
+        assertEquals(arrayListOf(10, 11, 11, 12, 12, 14), KConfig.createConfigHolder("intArray", arrayListOf(10, 1, 11, 11, 12, 12, 14)).get())
+    }
+
+    @Test
+    fun booleanArrayTest() {
+        initKC()
+        assertEquals(arrayListOf(false, false, false), KConfig.createConfigHolder("booleanArray", arrayListOf(false, false, false, true)).get())
+    }
+
+    @Test
+    fun doubleArrayTest() {
+        initKC()
+        assertEquals(arrayListOf(0.2, 4.0, 3.2), KConfig.createConfigHolder("doubleArray", arrayListOf(0.2, 3.2)).get())
+    }
+
+    private fun initKC() {
+        KConfig.init(Paths.get("test.toml"))
     }
 }

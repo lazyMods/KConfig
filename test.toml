@@ -2,7 +2,17 @@
 value=false
 [name]
 value="Marco"
-[height]
-value=1.69
+[animes]
+value=["Naruto", "Dragon Ball", "HunterXHunter"]
 [age]
 value=23
+[height]
+value=1.69
+[msgTest]
+value=10
+[intArray]
+value=[10, 11, 11, 12, 12, 14]
+[booleanArray]
+value=[false, false, false]
+[doubleArray]
+value=[0.2,4.0,3.2]
