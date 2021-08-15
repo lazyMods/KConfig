@@ -16,8 +16,9 @@ internal object ConfigParser {
         return parseEntries()
     }
 
-    fun addConfigEntry(entry: ConfigEntry) {
+    fun addConfigEntry(entry: ConfigEntry, comment: String = "") {
         val configFile = FileWriter(filePath.toFile(), true)
+        if(comment.isNotEmpty()) configFile.append("#$comment\n")
         configFile.append("[${entry.key}]\n")
         configFile.append("value=")
         val value = when (entry.value) {
