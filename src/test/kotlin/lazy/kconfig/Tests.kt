@@ -23,6 +23,8 @@ class Tests {
         val booleanArray = KConfig.createConfigHolder("booleanArray", arrayListOf(false, false, false))
         val doubleArray = KConfig.createConfigHolder("doubleArray", arrayListOf(0.2, 4.0, 3.2))
         val animes = KConfig.createConfigHolder("animes", arrayListOf("\"Naruto\"", "\"Dragon Ball\"", "\"HunterXHunter\""))
+        val intRange = KConfig.createIntRangeConfigHolder("intRange", 10, Pair(0, Int.MAX_VALUE))
+        val doubleRange = KConfig.createDoubleRangeConfigHolder("doubleRange", 1.0, Pair(0.0, Double.MAX_VALUE))
         assertEquals(23, age.get())
         assertEquals("Marco", name.get())
         assertEquals(arrayListOf("\"Naruto\"", "\"Dragon Ball\"", "\"HunterXHunter\""), animes.get())
@@ -32,6 +34,8 @@ class Tests {
         assertEquals(arrayListOf(10, 11, 11, 12, 12, 14), intArray.get())
         assertEquals(arrayListOf(false, false, false), booleanArray.get())
         assertEquals(arrayListOf(0.2, 4.0, 3.2), doubleArray.get())
+        assertEquals(10, intRange.get())
+        assertEquals(1.0, doubleRange.get())
     }
 
     @Test
@@ -105,6 +109,20 @@ class Tests {
     fun doubleArrayTest() {
         initKC()
         assertEquals(arrayListOf(0.2, 4.0, 3.2), KConfig.createConfigHolder("doubleArray", arrayListOf(0.2, 3.2)).get())
+    }
+
+    @Test
+    @Order(1)
+    fun intRangeTest() {
+        initKC()
+        assertEquals(10, KConfig.createIntRangeConfigHolder("intRange", 10, Pair(0, Int.MAX_VALUE)).get())
+    }
+
+    @Test
+    @Order(1)
+    fun doubleRangeTest() {
+        initKC()
+        assertEquals(1.0, KConfig.createDoubleRangeConfigHolder("doubleRange", 1.0, Pair(0.0, Double.MAX_VALUE)).get())
     }
 
     private fun initKC() {
