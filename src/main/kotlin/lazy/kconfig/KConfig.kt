@@ -21,10 +21,13 @@ object KConfig {
     fun <T> createConfigHolder(key: String, defaultValue: T): ConfigHolder<T> {
         if(getByKey(key) == null){
             println("[KConfig] Creating entry with key: --> $key <-- value: $defaultValue. Config File: $id")
-            ConfigParser.addConfigEntry(ConfigEntry(key, defaultValue as Any))
+            ConfigParser.addConfigEntry(ConfigEntry(key, defaultValue))
             return ConfigHolder(defaultValue)
         }
-        return ConfigHolder(getByKey(key)!!.value as T)
+        val fromKey = ConfigHolder(getByKey(key)!!.value as T)
+        if(defaultValue != fromKey.get())
+            println("[KConfig] Loaded $key from file with value: ${fromKey.get()} [Default is $defaultValue]")
+        return fromKey
     }
 
     private fun getByKey(key: String): ConfigEntry? {
