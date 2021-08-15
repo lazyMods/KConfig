@@ -1,11 +1,9 @@
-[pineappleOnPizza]
-value=false
-[name]
-value="Marco"
-[animes]
-value=["Naruto", "Dragon Ball", "HunterXHunter"]
 [age]
 value=23
+[name]
+value="Marco"
+[pineappleOnPizza]
+value=false
 [height]
 value=1.69
 [msgTest]
@@ -15,4 +13,6 @@ value=[10, 11, 11, 12, 12, 14]
 [booleanArray]
 value=[false, false, false]
 [doubleArray]
-value=[0.2,4.0,3.2]
+value=[0.2, 4.0, 3.2]
+[animes]
+value=["Naruto", "Dragon Ball", "HunterXHunter"]
