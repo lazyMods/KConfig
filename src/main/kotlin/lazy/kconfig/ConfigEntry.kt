@@ -2,7 +2,7 @@ package lazy.kconfig
 
 internal class ConfigEntry(
     val key: String,
-    val value: Any,
+    val value: Any?,
     val min: Any? = null,
     val max: Any? = null
 ) {

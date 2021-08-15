@@ -16,11 +16,24 @@ internal object ConfigParser {
         return parseEntries()
     }
 
-    fun addConfigEntry(entry: ConfigEntry){
+    fun addConfigEntry(entry: ConfigEntry) {
         val configFile = FileWriter(filePath.toFile(), true)
         configFile.append("[${entry.key}]\n")
         configFile.append("value=")
-        val value = if(entry.value is String) "\u0022${entry.value}\u0022\n" else "${entry.value}\n"
+        val value = when (entry.value) {
+            is String -> {
+                "\u0022${entry.value}\u0022\n"
+            }
+            is List<*> -> {
+                val stringBuilder = StringBuilder()
+                stringBuilder.append("[")
+                entry.value.forEach { stringBuilder.append("$it, ") }
+                stringBuilder.substring(0, stringBuilder.length - 2).plus("]\n")
+            }
+            else -> {
+                "${entry.value}\n"
+            }
+        }
         configFile.append(value)
         configFile.flush()
         configFile.close()
@@ -42,11 +55,29 @@ internal object ConfigParser {
     }
 
     private fun parseValue(parse: String): Any {
-        if (parse == "false" || parse == "true") return parse.toBoolean()
-        if (startsAndEndsWith(parse, '"')) return parse.substring(1, parse.length - 1)
-        if (parse.filter { it == '.' }.length == 1) return parse.toDouble()
+        if (isBoolean(parse)) return parse.toBoolean()
+        if (isString(parse)) return parse.substring(1, parse.length - 1)
+        if (isDouble(parse)) return parse.toDouble()
+        if (isArray(parse)) return parseArray(parse)
         return parse.toInt()
     }
+
+    private fun parseArray(parse: String): Any {
+        val tempValues = parse.substring(1, parse.length - 1).split(',')
+        val trimValues = arrayListOf<String>()
+        tempValues.forEach { trimValues.add(it.trim()) }
+        if (trimValues.all { isBoolean(it) }) return trimValues.map { it.toBoolean() }
+        if (trimValues.all { isString(it) }) return trimValues.map { it }
+        if (trimValues.all { isDouble(it) }) return trimValues.map { it.toDouble() }
+        if (trimValues.all { isInteger(it) }) return trimValues.map { it.toInt() }
+        return parse
+    }
+
+    private fun isBoolean(parse: String): Boolean = parse == "false" || parse == "true"
+    private fun isString(parse: String): Boolean = startsAndEndsWith(parse, '"')
+    private fun isDouble(parse: String): Boolean = parse.filter { it == '.' }.length == 1
+    private fun isArray(parse: String): Boolean = startsAndEndsWith(parse, '[', ']')
+    private fun isInteger(parse: String): Boolean = parse.matches(Regex("[0-9]+"))
 
     private fun startsAndEndsWith(toCheck: String, char: Char): Boolean = toCheck.startsWith(char) && toCheck.endsWith(char)
     private fun startsAndEndsWith(toCheck: String, start: Char, end: Char): Boolean = toCheck.startsWith(start) && toCheck.endsWith(end)
