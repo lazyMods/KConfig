@@ -22,12 +22,12 @@ class Tests {
         val intArray = KConfig.createConfigHolder("intArray", arrayListOf(10, 11, 11, 12, 12, 14))
         val booleanArray = KConfig.createConfigHolder("booleanArray", arrayListOf(false, false, false))
         val doubleArray = KConfig.createConfigHolder("doubleArray", arrayListOf(0.2, 4.0, 3.2))
-        val animes = KConfig.createConfigHolder("animes", arrayListOf("\"Naruto\"", "\"Dragon Ball\"", "\"HunterXHunter\""))
+        val animes = KConfig.createConfigHolder("animes", arrayListOf("Naruto", "Dragon Ball", "HunterXHunter"))
         val intRange = KConfig.createIntRangeConfigHolder("intRange", 10, Pair(0, Int.MAX_VALUE))
         val doubleRange = KConfig.createDoubleRangeConfigHolder("doubleRange", 1.0, Pair(0.0, Double.MAX_VALUE))
         assertEquals(23, age.get())
         assertEquals("Marco", name.get())
-        assertEquals(arrayListOf("\"Naruto\"", "\"Dragon Ball\"", "\"HunterXHunter\""), animes.get())
+        assertEquals(arrayListOf("Naruto", "Dragon Ball", "HunterXHunter"), animes.get())
         assertEquals(false, pineappleOnPizza.get())
         assertEquals(1.69, height.get())
         assertEquals(10, msgTest.get())
@@ -78,8 +78,8 @@ class Tests {
     fun stringArrayTest() {
         initKC()
         assertEquals(
-            arrayListOf("\"Naruto\"", "\"Dragon Ball\"", "\"HunterXHunter\""),
-            KConfig.createConfigHolder("animes", arrayListOf("\"Naruto\"", "\"Dragon Ball\"", "\"Death Note\"", "\"HunterXHunter\"")).get()
+            arrayListOf("Naruto", "Dragon Ball", "HunterXHunter"),
+            KConfig.createConfigHolder("animes", arrayListOf("Naruto", "Dragon Ball", "Death Note", "HunterXHunter")).get()
         )
     }
 
@@ -87,7 +87,7 @@ class Tests {
     @Order(1)
     fun arrayContainValue() {
         initKC()
-        assertEquals(true, KConfig.createConfigHolder("animes", arrayListOf("\"Naruto\"", "\"Dragon Ball\"", "\"Death Note\"", "\"HunterXHunter\"")).get().contains("\"Naruto\""))
+        assertEquals(true, KConfig.createConfigHolder("animes", arrayListOf("Naruto", "Dragon Ball", "Death Note", "HunterXHunter")).get().contains("Naruto"))
     }
 
     @Test

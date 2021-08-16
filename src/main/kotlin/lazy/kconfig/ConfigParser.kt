@@ -18,7 +18,7 @@ internal object ConfigParser {
 
     fun addConfigEntry(entry: ConfigEntry, comment: String = "") {
         val configFile = FileWriter(filePath.toFile(), true)
-        if(comment.isNotEmpty()) configFile.append("#$comment\n")
+        if (comment.isNotEmpty()) configFile.append("#$comment\n")
         configFile.append("[${entry.key}]\n")
         configFile.append("value=")
         val value = when (entry.value) {
@@ -28,7 +28,13 @@ internal object ConfigParser {
             is List<*> -> {
                 val stringBuilder = StringBuilder()
                 stringBuilder.append("[")
-                entry.value.forEach { stringBuilder.append("$it, ") }
+                entry.value.forEach {
+                    if (it is String) {
+                        stringBuilder.append("\u0022${it}\u0022, ")
+                    } else {
+                        stringBuilder.append("$it, ")
+                    }
+                }
                 stringBuilder.substring(0, stringBuilder.length - 2).plus("]\n")
             }
             else -> {
@@ -68,7 +74,7 @@ internal object ConfigParser {
         val trimValues = arrayListOf<String>()
         tempValues.forEach { trimValues.add(it.trim()) }
         if (trimValues.all { isBoolean(it) }) return trimValues.map { it.toBoolean() }
-        if (trimValues.all { isString(it) }) return trimValues.map { it }
+        if (trimValues.all { isString(it) }) return trimValues.map { it.substring(1, it.length - 1) }
         if (trimValues.all { isDouble(it) }) return trimValues.map { it.toDouble() }
         if (trimValues.all { isInteger(it) }) return trimValues.map { it.toInt() }
         return parse
