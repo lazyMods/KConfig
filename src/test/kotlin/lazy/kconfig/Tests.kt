@@ -13,18 +13,19 @@ class Tests {
     @Test
     @Order(0)
     fun configHolder() {
-        initKC()
-        val age = KConfig.createConfigHolder("age", 23)
-        val name = KConfig.createConfigHolder("name", "Marco")
-        val pineappleOnPizza = KConfig.createConfigHolder("pineappleOnPizza", false)
-        val height = KConfig.createConfigHolder("height", 1.69)
-        val msgTest = KConfig.createConfigHolder("msgTest", 10)
-        val intArray = KConfig.createConfigHolder("intArray", arrayListOf(10, 11, 11, 12, 12, 14))
-        val booleanArray = KConfig.createConfigHolder("booleanArray", arrayListOf(false, false, false))
-        val doubleArray = KConfig.createConfigHolder("doubleArray", arrayListOf(0.2, 4.0, 3.2))
-        val animes = KConfig.createConfigHolder("animes", arrayListOf("Naruto", "Dragon Ball", "HunterXHunter"))
-        val intRange = KConfig.createIntRangeConfigHolder("intRange", 10, Pair(0, Int.MAX_VALUE))
-        val doubleRange = KConfig.createDoubleRangeConfigHolder("doubleRange", 1.0, Pair(0.0, Double.MAX_VALUE))
+        val builder = initKC()
+        val age = builder.defineInt("age", 23)
+        val name = builder.defineString("name", "Marco")
+        val pineappleOnPizza = builder.defineBoolean("pineappleOnPizza", false)
+        val height = builder.defineDouble("height", 1.69)
+        val msgTest = builder.defineInt("msgTest", 10)
+        val intArray = builder.defineIntArray("intArray", arrayListOf(10, 11, 11, 12, 12, 14))
+        val booleanArray = builder.defineBooleanArray("booleanArray", arrayListOf(false, false, false))
+        val doubleArray = builder.defineDoubleArray("doubleArray", arrayListOf(0.2, 4.0, 3.2))
+        val animes = builder.defineStringArray("animes", arrayListOf("Naruto", "Dragon Ball", "HunterXHunter"))
+        val intRange = builder.defineIntRange("intRange", 10, 0, Int.MAX_VALUE)
+        val doubleRange = builder.defineDoubleRange("doubleRange", 1.0, 0.0, Double.MAX_VALUE)
+        builder.build()
         assertEquals(23, age.get())
         assertEquals("Marco", name.get())
         assertEquals(arrayListOf("Naruto", "Dragon Ball", "HunterXHunter"), animes.get())
@@ -41,91 +42,123 @@ class Tests {
     @Test
     @Order(1)
     fun loadMsgTest() {
-        initKC()
-        assertEquals(10, KConfig.createConfigHolder("msgTest", 100).get())
+        val builder = initKC()
+        val msgTest = builder.defineInt("msgTest", 100)
+        builder.build()
+        assertEquals(10, msgTest.get())
     }
 
     @Test
     @Order(1)
     fun booleanTest() {
-        initKC()
-        assertEquals(false, KConfig.createConfigHolder("pineappleOnPizza", false).get())
+        val builder = initKC()
+        val pineappleOnPizza = builder.defineBoolean("pineappleOnPizza", false)
+        builder.build()
+        assertEquals(false, pineappleOnPizza.get())
     }
 
     @Test
     @Order(1)
     fun stringTest() {
-        initKC()
-        assertEquals("Marco", KConfig.createConfigHolder("name", "Marco").get())
+        val builder = initKC()
+        val name = builder.defineString("name", "Marco")
+        builder.build()
+        assertEquals("Marco", name.get())
     }
 
     @Test
     @Order(1)
     fun intTest() {
-        initKC()
-        assertEquals(23, KConfig.createConfigHolder("age", 23).get())
+        val builder = initKC()
+        val age = builder.defineInt("age", 23)
+        builder.build()
+        assertEquals(23, age.get())
     }
 
     @Test
     @Order(1)
     fun doubleTest() {
-        initKC()
-        assertEquals(1.69, KConfig.createConfigHolder("height", 1.69).get())
+        val builder = initKC()
+        val height = builder.defineDouble("height", 1.69)
+        builder.build()
+        assertEquals(1.69, height.get())
     }
 
     @Test
     @Order(1)
     fun stringArrayTest() {
-        initKC()
-        assertEquals(
-            arrayListOf("Naruto", "Dragon Ball", "HunterXHunter"),
-            KConfig.createConfigHolder("animes", arrayListOf("Naruto", "Dragon Ball", "Death Note", "HunterXHunter")).get()
-        )
+        val builder = initKC()
+        val animes = builder.defineStringArray("animes", arrayListOf("Naruto", "Dragon Ball", "Death Note", "HunterXHunter"))
+        builder.build()
+        assertEquals(arrayListOf("Naruto", "Dragon Ball", "HunterXHunter"), animes.get())
     }
 
     @Test
     @Order(1)
     fun arrayContainValue() {
-        initKC()
-        assertEquals(true, KConfig.createConfigHolder("animes", arrayListOf("Naruto", "Dragon Ball", "Death Note", "HunterXHunter")).get().contains("Naruto"))
+        val builder = initKC()
+        val animes = builder.defineStringArray("animes", arrayListOf("Naruto", "Dragon Ball", "Death Note", "HunterXHunter"))
+        builder.build()
+        assertEquals(true, animes.get().contains("Naruto"))
     }
 
     @Test
     @Order(1)
     fun intArrayTest() {
-        initKC()
-        assertEquals(arrayListOf(10, 11, 11, 12, 12, 14), KConfig.createConfigHolder("intArray", arrayListOf(10, 1, 11, 11, 12, 12, 14)).get())
+        val builder = initKC()
+        val intArray = builder.defineIntArray("intArray", arrayListOf(10, 1, 11, 11, 12, 12, 14))
+        builder.build()
+        assertEquals(arrayListOf(10, 11, 11, 12, 12, 14), intArray.get())
     }
 
     @Test
     @Order(1)
     fun booleanArrayTest() {
-        initKC()
-        assertEquals(arrayListOf(false, false, false), KConfig.createConfigHolder("booleanArray", arrayListOf(false, false, false, true)).get())
+        val builder = initKC()
+        val booleanArray = builder.defineBooleanArray("booleanArray", arrayListOf(false, false, false, true))
+        builder.build()
+        assertEquals(arrayListOf(false, false, false), booleanArray.get())
     }
 
     @Test
     @Order(1)
     fun doubleArrayTest() {
-        initKC()
-        assertEquals(arrayListOf(0.2, 4.0, 3.2), KConfig.createConfigHolder("doubleArray", arrayListOf(0.2, 3.2)).get())
+        val builder = initKC()
+        val doubleArray = builder.defineDoubleArray("doubleArray", arrayListOf(0.2, 3.2))
+        builder.build()
+        assertEquals(arrayListOf(0.2, 4.0, 3.2), doubleArray.get())
     }
 
     @Test
     @Order(1)
     fun intRangeTest() {
-        initKC()
-        assertEquals(10, KConfig.createIntRangeConfigHolder("intRange", 10, Pair(0, Int.MAX_VALUE)).get())
+        val builder = initKC()
+        val intRange = builder.defineIntRange("intRange", 10, 0)
+        builder.build()
+        assertEquals(10, intRange.get())
     }
 
     @Test
     @Order(1)
     fun doubleRangeTest() {
-        initKC()
-        assertEquals(1.0, KConfig.createDoubleRangeConfigHolder("doubleRange", 1.0, Pair(0.0, Double.MAX_VALUE)).get())
+        val builder = initKC()
+        val doubleRange = builder.defineDoubleRange("doubleRange", 1.0, 0.0)
+        builder.build()
+        assertEquals(1.0, doubleRange.get())
     }
 
-    private fun initKC() {
-        KConfig.init(Paths.get("test.toml"))
+    @Test
+    @Order(1)
+    fun builderTest() {
+        val builder = KConfig.createBuilder(Paths.get("test.toml"))
+        val name = builder.defineStringArray("name", arrayListOf("Marco", "Santos"))
+        val age = builder.defineInt("age", 23)
+        builder.build()
+        assertEquals(arrayListOf("Marco", "Santos"), name.get())
+        assertEquals(23, age.get())
+    }
+
+    private fun initKC(): KBuilder {
+        return KConfig.createBuilder(Paths.get("test.toml"))
     }
 }

@@ -10,7 +10,7 @@ internal object ConfigParser {
     private lateinit var filePath: Path
 
     fun parse(filePath: Path): List<ConfigEntry> {
-        this.filePath = filePath;
+        this.filePath = filePath
         val fileLines = filePath.toFile().readLines(Charset.defaultCharset())
         createEntries(fileLines)
         return parseEntries()
@@ -88,4 +88,11 @@ internal object ConfigParser {
 
     private fun startsAndEndsWith(toCheck: String, char: Char): Boolean = toCheck.startsWith(char) && toCheck.endsWith(char)
     private fun startsAndEndsWith(toCheck: String, start: Char, end: Char): Boolean = toCheck.startsWith(start) && toCheck.endsWith(end)
+
+    fun clearFile() {
+        val config = FileWriter(filePath.toFile(), false)
+        config.append("")
+        config.flush()
+        config.close()
+    }
 }
