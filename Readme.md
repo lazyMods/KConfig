@@ -21,6 +21,7 @@ value=[
 * [x] Create files if they don't exist.
 * [x] Default values when not available.
 * [x] Min and Max allowed.
+* [ ] Add Maps.
 
 ### How to use:
 
