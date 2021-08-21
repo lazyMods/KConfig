@@ -37,12 +37,14 @@ dependencies {
 }
 ```
 
-### Version: 0.0.3
+### Version: 0.0.5
 
 ```kotlin
-KConfig.init(Paths.get("test.toml"))
+val builder = KConfig.createBuilder(Paths.get("test.toml"))
+
 //ConfigHolder holds the value from the key specified with default
-var name: ConfigHolder<String> = KConfig.createConfigHolder("name", "Marco")
+var name: ConfigHolder<String> = builder.defineString("name", "Marco")
+
 //Using ConfigHolder::get you get the held value
 println(name.get())
 
@@ -50,15 +52,20 @@ println(name.get())
 * Supported types are Int and Doubles.
 * If the value isn't in range returns the default value.
 * 
-* KConfig.createIntRangeConfigHolder
-* KConfig.createDoubleRangeConfigHolder
+* KConfig.defineIntRange(key, default, min, max = Integer.MAX_VALUE)
+* KConfig.defineDoubleRange(key, default, min, max = Double.MAX_VALUE)
+* 
+* The max value is defined with the max value of the type but you can change it by passing other value.
  */
-var ranged: ConfigHolder<Int> = KConfig.createIntRangeConfigHolder("intRange", 10, Pair(0, Int.MAX_VALUE))
+var ranged: ConfigHolder<Int> = builder.defineIntRange("intRange", 10, 0)
 println(ranged.get())
 
 // Array entry
-var blocks: ConfigHolder<List<String>> = KConfig.createConfigHolder("blocks", arrayListOf("diamond_ore", "diamond_block"))
+var blocks: ConfigHolder<List<String>> = builder.defineStringArray("blocks", arrayListOf("diamond_ore", "diamond_block"))
 println(blocks.get())
+
+//Then we need to build the config calling builder.build();
+builder.build()
 ```
 
 ##### Configuration File:
